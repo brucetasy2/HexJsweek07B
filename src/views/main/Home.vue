@@ -19,14 +19,14 @@
         </ul>
       </div>
     </nav>
-    <br />
+    <!-- <br />
     <div class='container'>
       <div class='row'>
         <div class='col-12'>
           <img src='@/assets/logo.png' alt />
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 

@@ -8,7 +8,6 @@
         </main>
       </div>
     </div>
-    <!-- 很重要，找好久 有router-link 就要有 router-view -->
     <router-view />
   </div>
 </template>
@@ -22,7 +21,8 @@ export default {
     Menu1,
   },
   data() {
-    return {};
+    return {
+    };
   },
 };
 </script>

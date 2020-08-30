@@ -1,4 +1,3 @@
-// dwatow.github.io/2018/09-21-vuejs/vue-router-router-view
 <template>
   <div id="app">
     <router-view/>

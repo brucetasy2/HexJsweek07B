@@ -43,11 +43,11 @@ const routes = [
       },
     ],
   },
-  {
-    path: '*',
-    name: 'Admin 管理頁面',
-    component: () => import('../views/submenu/Menucontainer.vue'),
-  },
+  // {
+  //   path: '*',
+  //   name: 'Admin2 管理頁面',
+  //   component: () => import('../views/submenu/Menucontainer.vue'),
+  // },
 ];
 
 const router = new VueRouter({
