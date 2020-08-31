@@ -3,6 +3,7 @@
     class="container next"
     style="margin-top: 120px;"
   >
+  <Loading :active.sync="isLoading" />
     <div class="card">
       <div
         class="mx-auto"
@@ -86,11 +87,7 @@ export default {
   },
   methods: {
     login() {
-      // 進行驗證
       const api = `${process.env.VUE_APP_APIPATH}auth/login`;
-      // console.log(`this.user=${this.user.email}`);
-      // console.log(`this.user=${this.user.password}`);
-      // console.log(`this.token=${this.token}`);
       this.isLoading = true;
       this.$http
         .post(api, this.user)
@@ -98,15 +95,22 @@ export default {
           const { token } = response.data;
           const { expired } = response.data;
           // 寫入 cookie token  expires 設置有效時間
-          document.cookie = `token=${token}; expires=${new Date(expired * 1000)}; path=/`;
-          // console.log(`okay ${token}`);
-          this.$bus.$emit('message:push', '登入成功', 'success');
+          document.cookie = `BTtoken=${token}; expires=${new Date(expired * 1000)}; path=/`;
+
+          this.$swal.fire({
+            icon: 'success',
+            title: `${this.user.email}`,
+            text: '您好',
+          });
           this.isLoading = false;
           this.$router.push('/admin/B2');
         })
         .catch((error) => {
-          console.log(error);
-          this.$bus.$emit('message:push', `登入失敗!${error}`, 'danger');
+          this.$swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: `很抱歉，您無法登入，錯誤代碼${error.request.status}`,
+          });
           this.isLoading = false;
         });
     },

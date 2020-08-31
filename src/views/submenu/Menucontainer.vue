@@ -4,7 +4,7 @@
     <div class='container-fluid'>
       <div class='row'>
         <main role='main' class='col-md-12 ml-sm-auto px-4'>
-          <router-link />
+          <!-- <router-link /> 造成錯誤-->
         </main>
       </div>
     </div>
