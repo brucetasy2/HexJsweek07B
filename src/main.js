@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import Vue from 'vue';
 import jQuery from 'jquery';
 import 'bootstrap';
@@ -7,8 +8,7 @@ import VueSweetalert2 from 'vue-sweetalert2';
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 import {
-  ValidationObserver,
-  ValidationProvider, configure, localize, extend,
+  ValidationObserver, ValidationProvider, configure, extend, localize,
 } from 'vee-validate'; // 驗證套件
 
 import * as rules from 'vee-validate/dist/rules'; // 規則檔案（ex: email...）

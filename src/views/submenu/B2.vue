@@ -87,7 +87,7 @@
           <div class="modal-body">
             <div class="row">
               <div class="col-sm-4">
-                <div v-for="i in 5" :key="i + 'img'" class="form-group row">
+                <div v-for="i in 5" :key="i + 'img'" class="form-group">
                   <label :for="'img' + i">輸入圖片網址 {{ i }}</label>
                   <input
                     :id="'img' + i"
@@ -98,7 +98,7 @@
                   />
                 </div>
 
-                <div class="form-group row">
+                <div class="form-group">
                   <label for="customFile">
                     或上傳圖片
                     <i v-if="status.fileUploading" class="fas fa-spinner fa-spin" />
@@ -116,21 +116,27 @@
               </div>
 
               <div class="col-sm-8">
-                <div class="form-group row">
-                  <label for="title">標題</label>
-                  <input
-                    id="title"
-                    v-model="tempProduct.title"
-                    type="text"
-                    class="form-control"
-                    placeholder="請輸入標題"
-                    required
-                  />
+                <div class="form-group">
+                  <ValidationProvider name="標題" rules="required|min:6"  v-slot="{ errors }">
+                      <label class="d-flex" for="title" >標題</label>
+                      <input
+                        id="title"
+                        v-model="tempProduct.title"
+                        type="text"
+                        class="form-control"
+                        placeholder="請輸入標題"
+                        required
+                      />
+                     <small id="titleErr" class="form-text d-flex text-danger">
+                       {{ errors[0] }}
+                     </small>
+                  </ValidationProvider>
                 </div>
 
                 <div class="form-row">
-                  <div class="form-group col-md-6 row">
-                    <label for="category">分類</label>
+                  <div class="form-group col-md-6">
+                    <ValidationProvider name="分類" rules="required|min:4"  v-slot="{ errors }">
+                    <label class="d-flex" for="category">分類</label>
                     <input
                       id="category"
                       v-model="tempProduct.category"
@@ -139,10 +145,15 @@
                       placeholder="請輸入分類"
                       required
                     />
+                    <small id="categoryErr" class="form-text d-flex text-danger">
+                       {{ errors[0] }}
+                    </small>
+                    </ValidationProvider>
                   </div>
 
-                  <div class="form-group col-md-6 row">
-                    <label for="price">單位</label>
+                  <div class="form-group col-md-6">
+                    <ValidationProvider name="單位" rules="required|min:2"  v-slot="{ errors }">
+                    <label class="d-flex" for="unit">單位</label>
                     <input
                       id="unit"
                       v-model="tempProduct.unit"
@@ -150,12 +161,17 @@
                       class="form-control"
                       placeholder="請輸入單位"
                     />
+                    <small id="unitErr" class="form-text d-flex text-danger">
+                       {{ errors[0] }}
+                    </small>
+                    </ValidationProvider>
                   </div>
                 </div>
 
                 <div class="form-row">
-                  <div class="form-group col-md-6 row">
-                    <label for="origin_price">原價</label>
+                  <div class="form-group col-md-6">
+                    <ValidationProvider name="原價" rules="required"  v-slot="{ errors }">
+                    <label class="d-flex" for="origin_price">原價</label>
                     <input
                       id="origin_price"
                       v-model="tempProduct.origin_price"
@@ -163,10 +179,15 @@
                       class="form-control"
                       placeholder="請輸入原價"
                     />
+                    <small id="origin_priceErr" class="form-text d-flex text-danger">
+                       {{ errors[0] }}
+                    </small>
+                    </ValidationProvider>
                   </div>
 
-                  <div class="form-group col-md-6 row">
-                    <label for="price">售價</label>
+                  <div class="form-group col-md-6">
+                  <ValidationProvider name="售價" rules="required" v-slot="{ errors }">
+                    <label class="d-flex" for="price">售價</label>
                     <input
                       id="price"
                       v-model="tempProduct.price"
@@ -174,12 +195,16 @@
                       class="form-control"
                       placeholder="請輸入售價"
                     />
+                    <small id="priceErr" class="form-text d-flex text-danger">
+                       {{ errors[0] }}
+                    </small>
+                    </ValidationProvider>
                   </div>
                 </div>
-                <hr />
 
-                <div class="form-group row">
-                  <label for="description">產品說明</label>
+                <div class="form-group">
+                  <ValidationProvider name="產品說明" rules="required|min:10"  v-slot="{ errors }">
+                  <label class="d-flex" for="description">產品說明</label>
                   <textarea
                     id="description"
                     v-model="tempProduct.description"
@@ -188,27 +213,34 @@
                     placeholder="請輸入產品說明"
                     required
                   />
+                  <small id="descriptionErr" class="form-text d-flex text-danger">
+                    {{ errors[0] }}
+                  </small>
+                  </ValidationProvider>
                 </div>
 
-                <div class="form-group row">
-                  <label for="content">產品描述</label>
+                <div class="form-group">
+                  <ValidationProvider name="產品描述" rules="required|min:6"  v-slot="{ errors }">
+                  <label class="d-flex" for="content">產品描述</label>
                   <vue-editor
                     id="content"
                     v-model="tempProduct.content"
                   />
+                  <small id="contentErr" class="form-text d-flex text-danger">
+                    {{ errors[0] }}
+                  </small>
+                  </ValidationProvider>
                 </div>
-                <br>
-                <hr>
 
-                <div class="form-group row">
+                <div class="form-group">
                   <div class="form-check">
                     <input
+                      class="form-check-input d-flex"
                       id="is_enabled"
                       v-model="tempProduct.enabled"
-                      class="form-check-input"
                       type="checkbox"
                     />
-                    <label class="form-check-label" for="is_enabled">是否啟用</label>
+                    <label class="form-check-label d-flex" for="is_enabled">是否啟用</label>
                   </div>
                 </div>
               </div>
