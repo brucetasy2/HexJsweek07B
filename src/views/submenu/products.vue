@@ -110,7 +110,6 @@
                     @change="uploadFile"
                   />
                 </div>
-
                 <img class="img-fluid" :src="tempProduct.imageUrl[0]" alt />
               </div>
 
