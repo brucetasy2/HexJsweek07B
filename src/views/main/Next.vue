@@ -95,7 +95,7 @@ export default {
           const { token } = response.data;
           const { expired } = response.data;
           // 寫入 cookie token  expires 設置有效時間
-          document.cookie = `BTtoken=${token}; expires=${new Date(expired * 1000)}; path=/`;
+          document.cookie = `BruceStoreT7_token=${token}; expires=${new Date(expired * 1000)}; path=/`;
 
           this.$swal.fire({
             icon: 'success',
@@ -103,7 +103,7 @@ export default {
             text: '您好',
           });
           this.isLoading = false;
-          this.$router.push('/admin/B2');
+          this.$router.push('/admin/products');
         })
         .catch((error) => {
           this.$swal.fire({

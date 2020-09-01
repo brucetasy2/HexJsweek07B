@@ -1,8 +1,8 @@
 <template>
-  <div class="B2">
+  <div class="products">
     <Loading :active.sync="isLoading" />
 
-    <div class="text-right mt-4">
+    <div class="text-right mt-4 mx-5">
       <button class="btn btn-primary" @click="openModal('new')">
         建立新的產品
       </button>
@@ -11,20 +11,20 @@
     <table class="table mt-4">
       <thead>
         <tr>
-          <th width="120">
+          <th width="60">
             分類
           </th>
           <th>產品名稱</th>
-          <th width="120">
+          <th width="80">
             原價
           </th>
-          <th width="120">
+          <th width="80">
             售價
           </th>
-          <th width="100">
+          <th width="120">
             是否啟用
           </th>
-          <th width="120">
+          <th width="200">
             編輯
           </th>
         </tr>
@@ -57,10 +57,10 @@
       </tbody>
     </table>
 
-    <!-- <Pagination
+    <Pagination
       :pages="pagination"
-      @emitPages="getProducts"
-    /> -->
+      @naviPages="getProducts"
+    />
 
     <!-- Modal (Show Product) START-->
     <div
@@ -72,7 +72,6 @@
       aria-hidden="true"
     >
       <div class="modal-dialog modal-xl" role="document">
-        <!-- Modal (Add or Modify Product) START-->
         <div class="modal-content border-0">
           <div class="modal-header bg-dark text-white">
             <h5 id="exampleModalLabel" class="modal-title">
@@ -257,7 +256,6 @@
             </button>
           </div>
         </div>
-        <!-- Modal (Add or Modify Product) END OF-->
       </div>
     </div>
     <!-- Modal (Show Product) ENDOF-->
@@ -303,12 +301,13 @@
 
 <script>
 import { VueEditor } from 'vue2-editor';
+import Pagination from '@/components/Pagination.vue';
 
 export default {
   name: 'Products',
   components: {
     VueEditor,
-    // Pagination,
+    Pagination,
   },
   data() {
     return {
@@ -323,38 +322,48 @@ export default {
         fileUploading: false,
       },
       uuid: process.env.VUE_APP_UUID,
-      xerror: [],
+      xerror: 'NO_ERROR',
     };
   },
   created() {
-    this.token = document.cookie.replace(/(?:(?:^|.*;\s*)BTtoken\s*=\s*([^;]*).*$)|^.*$/, '$1');
+    this.token = document.cookie.replace(/(?:(?:^|.*;\s*)BruceStoreT7_token\s*=\s*([^;]*).*$)|^.*$/, '$1');
     const url = `${process.env.VUE_APP_APIPATH}auth/check`;
     // Axios 預設值
     this.$http.defaults.headers.common.Authorization = `Bearer ${this.token}`;
-
     this.$http
       .post(url, { api_token: this.token })
       .then(() => {
         this.getProducts();
       })
       .catch((err) => {
-        console.log(`B2 error => ${err}`);
+        this.$swal.fire({
+          icon: 'error',
+          title: 'Oops0...',
+          text: `錯誤代碼${err.request.status}`,
+        });
       });
   },
   methods: {
-    getProducts() {
+    getProducts(page = 1) {
       this.isLoading = true;
       const api = `${process.env.VUE_APP_APIPATH}${this.uuid}/admin/ec/products`;
       this.$http
-        .get(api)
+        .get(api,
+          {
+            params: {
+              page: `${page}`,
+              paged: `${process.env.VUE_APP_PAGED}`,
+            },
+          })
         .then((res) => {
           this.products = res.data.data;
+          this.pagination = res.data.meta.pagination;
           this.isLoading = false;
         })
         .catch((error) => {
           this.$swal.fire({
             icon: 'error',
-            title: 'Oops...',
+            title: 'Oops1...',
             text: `錯誤代碼${error.request.status}`,
           });
           this.isLoading = false;
@@ -376,7 +385,6 @@ export default {
           this.getDetails(item.id);
           break;
         case 'delete':
-          console.log(`delete ${isNew}`);
           this.tempProduct = { ...item };
           $('#delProductModal').modal('show');
           break;
@@ -385,12 +393,28 @@ export default {
       }
     },
     delProduct() {
-      this.$swal.fire({
-        icon: 'success',
-        title: 'DELETE',
-        text: '您好',
-      });
-      console.log('DELE');
+      this.isLoading = true;
+      const url = `${process.env.VUE_APP_APIPATH}${this.uuid}/admin/ec/product/${this.tempProduct.id}`;
+      this.$http.delete(url)
+        .then(() => {
+          $('#delProductModal').modal('hide');
+          this.isLoading = true;
+          this.$swal.fire({
+            icon: 'success',
+            title: `刪除產品 ${this.tempProduct.title}`,
+            text: '成功 !',
+          });
+          this.getProducts(this.pagination.current_page);
+        })
+        .catch((error) => {
+          this.isLoading = false;
+          this.$swal.fire({
+            icon: 'error',
+            title: `刪除產品 ${this.tempProduct.title}`,
+            text: `錯誤代碼${error.request.status}`,
+          });
+        });
+      this.getProducts(this.pagination.current_page);
     },
     uploadFile() {
       const uploadedFile = this.$refs.file.files[0];
@@ -412,7 +436,7 @@ export default {
         this.status.fileUploading = false;
         this.$swal.fire({
           icon: 'error',
-          title: 'Oops...',
+          title: 'Oops2...',
           text: `請檢查是不是檔案大小超過 2MB ${error.request.status}`,
         });
       });
@@ -436,11 +460,10 @@ export default {
           text: '成功 !',
         });
         this.isLoading = false;
-        this.getProducts();
+        this.getProducts(this.pagination.current_page);
       }).catch((error) => {
         this.xerror = error.response.data;
         this.isLoading = false;
-        // const errorData = error.response.data;
         $('#productModal').modal('hide');
 
         this.$swal.fire({
@@ -462,7 +485,7 @@ export default {
         .catch((error) => {
           this.$swal.fire({
             icon: 'error',
-            title: 'Oops...',
+            title: 'Oops3...',
             text: `錯誤代碼${error.request.status}`,
           });
           this.isLoading = false;

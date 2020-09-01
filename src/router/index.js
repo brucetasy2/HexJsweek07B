@@ -32,14 +32,19 @@ const routes = [
     component: () => import('../views/submenu/Menucontainer.vue'),
     children: [
       {
-        path: 'B2',
-        name: 'B2_PAGE',
-        component: () => import('../views/submenu/B2.vue'),
+        path: 'products',
+        name: 'products_page',
+        component: () => import('../views/submenu/products.vue'),
       },
       {
-        path: 'B3',
-        name: 'B3_PAGE',
-        component: () => import('../views/submenu/B3.vue'),
+        path: 'storages',
+        name: 'storages_page',
+        component: () => import('../views/submenu/storages.vue'),
+      },
+      {
+        path: 'orders',
+        name: 'orders_page',
+        component: () => import('../views/submenu/orders.vue'),
       },
     ],
   },
