@@ -1,15 +1,16 @@
 <template>
     <div>
-        <Pagination/>
+        <h1>MyTemplate</h1>
+        <!-- <Pagination/> -->
     </div>
 </template>
 
 <script>
-import Pagination from '@/components/Pagination.vue';
+// import Pagination from '@/components/Pagination.vue';
 
 export default {
   components: {
-    Pagination,
+    // Pagination,
   },
   data() {
     return {

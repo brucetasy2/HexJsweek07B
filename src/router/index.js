@@ -51,6 +51,11 @@ const routes = [
         name: 'coupons_page',
         component: () => import('../views/submenu/Coupons.vue'),
       },
+      {
+        path: 'mockorder',
+        name: 'mockorder_page',
+        component: () => import('../views/submenu/Mockorder.vue'),
+      },
     ],
   },
   {
