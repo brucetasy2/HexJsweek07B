@@ -19,7 +19,7 @@ export default {
       xerror: 'NO_ERROR',
     };
   },
-  created: {
+  created() {
 
   },
   methods: {

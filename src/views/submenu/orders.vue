@@ -1,7 +1,8 @@
 <template>
 <div class="orders">
   <Loading :active.sync="isLoading" />
-  <div class="container my-4">
+
+  <div class="d-flex align-items-center my-4">
      <table
       class="table table-striped table-bordered" cellspacing="0" width="100%">
       <thead>

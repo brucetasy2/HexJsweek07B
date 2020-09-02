@@ -8,55 +8,57 @@
       </button>
     </div>
 
-    <table class="table mt-4">
-      <thead>
-        <tr>
-          <th width="60">
-            分類
-          </th>
-          <th>產品名稱</th>
-          <th width="80">
-            原價
-          </th>
-          <th width="80">
-            售價
-          </th>
-          <th width="120">
-            是否啟用
-          </th>
-          <th width="200">
-            編輯
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="item in products" :key="item.id">
-          <td>{{ item.category }}</td>
-          <td>{{ item.title }}</td>
-          <td class="text-right">
-            {{ item.origin_price | currency }}
-          </td>
-          <td class="text-right">
-            {{ item.price | currency }}
-          </td>
-          <td>
-            <span v-if="item.enabled" class="text-success">啟用</span>
-            <span v-else>未啟用</span>
-          </td>
-          <td>
-            <div class="btn-group">
-              <button class="btn btn-outline-primary btn-sm" @click="openModal('edit', item)">
+    <div class="d-flex align-items-center my-4">
+        <table
+        class="table table-striped table-bordered" cellspacing="0" width="100%">
+          <thead>
+            <tr>
+              <th width="100">
+                分類
+              </th>
+              <th>產品名稱</th>
+              <th width="80">
+                原價
+              </th>
+              <th width="80">
+                售價
+              </th>
+              <th width="120">
+                是否啟用
+              </th>
+              <th width="200">
                 編輯
-              </button>
-              <button class="btn btn-outline-danger btn-sm" @click="openModal('delete', item)">
-                刪除
-              </button>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in products" :key="item.id">
+              <td>{{ item.category }}</td>
+              <td>{{ item.title }}</td>
+              <td class="text-right">
+                {{ item.origin_price | currency }}
+              </td>
+              <td class="text-right">
+                {{ item.price | currency }}
+              </td>
+              <td>
+                <span v-if="item.enabled" class="text-success">啟用</span>
+                <span v-else>未啟用</span>
+              </td>
+              <td>
+                <div class="btn-group">
+                  <button class="btn btn-outline-primary btn-sm" @click="openModal('edit', item)">
+                    編輯
+                  </button>
+                  <button class="btn btn-outline-danger btn-sm" @click="openModal('delete', item)">
+                    刪除
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
     <Pagination
       :pages="pagination"
       @naviPages="getProducts"

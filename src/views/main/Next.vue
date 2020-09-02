@@ -85,6 +85,27 @@ export default {
       isLoading: false,
     };
   },
+  created() {
+    this.token = document.cookie.replace(
+      /(?:(?:^|.*;\s*)BruceStoreT7_token\s*=\s*([^;]*).*$)|^.*$/,
+      '$1',
+    );
+    const url = `${process.env.VUE_APP_APIPATH}auth/check`;
+    // Axios 預設值
+    this.$http.defaults.headers.common.Authorization = `Bearer ${this.token}`;
+    this.$http
+      .post(url, { api_token: this.token })
+      .then(() => {
+        this.$router.push('/admin/products');
+      });
+    // .catch((err) => {
+    //   this.$swal.fire({
+    //     icon: 'error',
+    //     title: 'Oops Orders Error N1...',
+    //     text: `錯誤代碼${err.request.status}${this.token}`,
+    //   });
+    // });
+  },
   methods: {
     login() {
       const api = `${process.env.VUE_APP_APIPATH}auth/login`;
