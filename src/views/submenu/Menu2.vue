@@ -26,24 +26,18 @@
            <router-link class='nav-link' :to="{ name:'mockorder_page'}">模擬下單</router-link>
         </li>
 
-        <li class="nav-item">
-                    <a
-            class="nav-link"
-            href="#"
-            @click.prevent="BackHome"
-          >
-            Home
+        <li>
+          <a @click.prevent="backHome" class="text-muted ml-3 ">
+            <i class="fas fa-home fa-2x text-info"></i>
           </a>
         </li>
-        <!-- <li class="nav-item">
-          <a
-            class="nav-link"
-            href="#"
-            @click.prevent="signOut"
-          >
-            登出
+
+        <li class="nav-item">
+          <a @click.prevent="logout" class="text-muted ml-3 ">
+            <i class="fas fa-sign-out-alt fa-2x text-danger">
+            </i>
           </a>
-        </li> -->
+        </li>
       </ul>
     </div>
   </nav>
@@ -55,12 +49,16 @@ export default {
     return {};
   },
   methods: {
-    BackHome() {
+    backHome() {
       this.$router.push('/');
-      // this.$bus.$emit('message:push',
-      //   '登出成功',
-      //   'success');
-      // this.$router.push('/login');
+    },
+    logout() {
+      this.token = document.cookie.replace(
+        /(?:(?:^|.*;\s*)BruceStoreT7_token\s*=\s*([^;]*).*$)|^.*$/,
+        '$1',
+      );
+      document.cookie = 'BruceStoreT7_token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
+      this.$router.push('/');
     },
   },
 };

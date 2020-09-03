@@ -98,13 +98,6 @@ export default {
       .then(() => {
         this.$router.push('/admin/products');
       });
-    // .catch((err) => {
-    //   this.$swal.fire({
-    //     icon: 'error',
-    //     title: 'Oops Orders Error N1...',
-    //     text: `錯誤代碼${err.request.status}${this.token}`,
-    //   });
-    // });
   },
   methods: {
     login() {
@@ -138,7 +131,11 @@ export default {
 
     //   清除token
     logout() {
-      document.cookie = 'token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
+      this.token = document.cookie.replace(
+        /(?:(?:^|.*;\s*)BruceStoreT7_token\s*=\s*([^;]*).*$)|^.*$/,
+        '$1',
+      );
+      document.cookie = 'BruceStoreT7_token= ; expires = Thu, 01 Jan 1970 00:00:00 GMT';
     },
   },
 };
