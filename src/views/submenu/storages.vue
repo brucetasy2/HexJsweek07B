@@ -5,7 +5,7 @@
       @click="openModal('new')">加入圖檔</button>
     </div> -->
 
-    <table class='table mt-4'>
+    <table class="table table-striped table-bordered mt-4" cellspacing="0" >
       <thead>
         <tr>
           <th>圖片縮圖</th>

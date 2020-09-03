@@ -3,8 +3,8 @@
     <Loading :active.sync="isLoading" />
 
     <!-- SECTION 訂單資料 START -->
-    <div class="col-md-6">
-      <table class="table mt-4">
+    <div class="col">
+      <table class="table table-striped table-bordered mt-4" cellspacing="0"  >
         <thead>
           <tr>
             <th>購買時間</th>
@@ -19,7 +19,7 @@
           <tr
             v-for="(item, key) in orders"
             :key="key"
-            :class="{'text-secondary': !item.is_paid}"
+            :class="{'text-secondary': !item.is_paid} "
           >
             <td>{{ item.created.datetime }}</td>
             <td>
@@ -37,7 +37,7 @@
               </ul>
             </td>
             <td class="text-right">
-              {{ item.amount }}
+              {{ item.amount|currency }}
             </td>
             <td>
               <strong
