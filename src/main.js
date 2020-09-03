@@ -10,7 +10,7 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 import {
   ValidationObserver, ValidationProvider, configure, extend, localize,
 } from 'vee-validate'; // 驗證套件
-
+import { regex } from 'vee-validate/dist/rules';
 import * as rules from 'vee-validate/dist/rules'; // 規則檔案（ex: email...）
 import zhTW from 'vee-validate/dist/locale/zh_TW.json'; // 語系檔案
 
@@ -41,6 +41,7 @@ configure({
 localize('tw', zhTW);
 Vue.component('ValidationObserver', ValidationObserver);
 Vue.component('ValidationProvider', ValidationProvider);
+extend('regex', regex);
 
 new Vue({
   router,

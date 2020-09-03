@@ -5,28 +5,25 @@
       <ul class="navbar-nav mr-auto">
 
         <li class="nav-item">
-          <router-link class="nav-link" :to="{ name: 'products_page' }">
+          <router-link class="nav-link" :to="{ name: 'products_page'}">
             產品列表
           </router-link>
         </li>
 
         <li class="nav-item">
-          <!-- <router-link class="nav-link" :to="{ name: 'orders_page' }">
-            訂單明細
-          </router-link> -->
-           <router-link to='orders' class='nav-link'>訂單列表</router-link>
+           <router-link class='nav-link' :to="{ name:'orders_page'}">訂單列表</router-link>
         </li>
 
         <li class="nav-item">
-           <router-link to='storages' class='nav-link'>圖檔管理</router-link>
+           <router-link class='nav-link' :to="{ name:'storages_page'}">圖檔管理</router-link>
         </li>
 
         <li class="nav-item">
-           <router-link to='coupons' class='nav-link'>優惠券</router-link>
+           <router-link  class='nav-link' :to="{ name:'coupons_page'}">優惠券</router-link>
         </li>
 
         <li class="nav-item">
-           <router-link to='mockorder' class='nav-link'>模擬下單</router-link>
+           <router-link class='nav-link' :to="{ name:'mockorder_page'}">模擬下單</router-link>
         </li>
 
         <li class="nav-item">
