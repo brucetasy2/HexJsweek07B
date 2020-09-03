@@ -1,9 +1,9 @@
 <template>
   <div>
-    <!-- <div class='text-right mt-4 mx-5'>
+    <div class='text-right mt-4 mx-5'>
       <button class='btn btn-primary'
       @click="openModal('new')">加入圖檔</button>
-    </div> -->
+    </div>
 
     <table class="table table-striped table-bordered mt-4" cellspacing="0" >
       <thead>
@@ -247,10 +247,10 @@ export default {
       }
     },
     updateData() {
-      // console.log('updateData');
+      console.log('updateData');
     },
     uploadFile() {
-      // console.log('uploadFile');
+      console.log('uploadFile');
     },
   },
 };
