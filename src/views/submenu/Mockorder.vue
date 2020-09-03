@@ -629,8 +629,6 @@ export default {
         product: item.id,
         quantity,
       };
-      console.log(`id = ${this.status.loadingItem} AND ${item.id}`);
-
       this.isLoading = true;
       const api = `${process.env.VUE_APP_APIPATH}${this.uuid}/ec/shopping`;
       this.$http
@@ -676,7 +674,6 @@ export default {
         });
     },
     accountModal() {
-      console.log('YOU WANT ACCOUNT');
       $('#accountModal').modal('show');
     },
 
@@ -770,16 +767,18 @@ export default {
     createOrder() {
       this.isLoading = true;
       const api = `${process.env.VUE_APP_APIPATH}${this.uuid}/ec/orders`;
-
       const order = { ...this.DeliveryInf };
-
       if (this.coupon.enabled) {
         order.coupon = this.coupon.code;
       }
-
       this.$http
         .post(api, order)
         .then((res) => {
+          this.$swal.fire({
+            icon: 'sucess',
+            title: '訂單建立',
+            text: '成功',
+          });
           this.$router.push(`/admin/Payment/${res.data.data.id}`);
         })
         .catch((error) => {
@@ -788,13 +787,9 @@ export default {
             title: '建立訂單失敗...',
             text: `錯誤代碼${error.request.status}`,
           });
-          this.isLoading = false;
         });
+      this.isLoading = false;
     },
   },
 };
 </script>
-
-<style lang="scss" scoped>
-
-</style>

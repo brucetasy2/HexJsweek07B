@@ -202,9 +202,7 @@ export default {
         });
     },
     deleteData() {
-      console.log(`deleteData= ${this.tempImg.id}`);
       this.isLoading = true;
-
       const url = `${process.env.VUE_APP_APIPATH}${this.uuid}/admin/storage/${this.tempImg.id}`;
       this.$http.delete(url)
         .then(() => {

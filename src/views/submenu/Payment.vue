@@ -190,24 +190,20 @@ export default {
       orderId: '',
       uuid: process.env.VUE_APP_UUID,
       isLoading: false,
+      pagination: [],
     };
   },
   created() {
-    console.log('created');
     this.orderId = this.$route.params.orderId;
-
     if (this.orderId) {
       this.getDetailed(this.orderId);
     }
-
     this.getOrders();
   },
   methods: {
     getOrders(page = 1) {
       this.isLoading = true;
-
       const api = `${process.env.VUE_APP_APIPATH}${this.uuid}/ec/orders?`;
-      this.isLoading = true;
       this.$http
         .get(api, {
           params: {
@@ -217,35 +213,32 @@ export default {
         }).then((res) => {
           this.orders = res.data.data;
           this.pagination = res.data.meta.pagination;
-          this.isLoading = false;
         });
+      this.isLoading = false;
     },
-    getDetailed(id) {
-      console.log('orderModal');
-      $('#orderModal').modal('show');
 
+    getDetailed(id) {
+      $('#orderModal').modal('show');
       this.isLoading = true;
       this.orderId = id;
-
       const api = `${process.env.VUE_APP_APIPATH}${this.uuid}/ec/orders/${id}`;
       this.$http.get(api).then((res) => {
         this.order = res.data.data;
-        this.isLoading = false;
       });
+      this.isLoading = false;
     },
     payOrder() {
       this.isLoading = true;
       const url = `${process.env.VUE_APP_APIPATH}${this.uuid}/ec/orders/${this.orderId}/paying`;
-
       this.$http.post(url)
         .then((res) => {
           if (res.data.data.paid) {
             this.getDetailed(this.orderId);
           }
-          this.isLoading = false;
           $('#orderModal').modal('hide');
           this.getOrders();
         });
+      this.isLoading = false;
     },
   },
 };
