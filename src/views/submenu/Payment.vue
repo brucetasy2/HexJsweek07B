@@ -203,8 +203,8 @@ export default {
     this.getOrders();
     this.isLoading = false;
     this.$swal.fire({
-      icon: '問題待解',
-      title: '請  F5 刷新..',
+      icon: 'success',
+      title: '問題待解，請  F5 刷新..',
       text: '模擬下單後進入，會出現遮罩 ! 到底是在哪 ? 阿砸 ..',
     });
   },

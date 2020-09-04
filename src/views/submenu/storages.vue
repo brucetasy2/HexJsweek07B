@@ -33,7 +33,9 @@
       </tbody>
     </table>
 
-    <Pagination :pages='pagination' @naviPages='getSorage' />
+    <Pagination :pages='pagination'
+    @naviPages='getSorage'
+    />
 
     <!-- Modal (DELETE) START-->
     <div>
@@ -56,7 +58,7 @@
               </button>
             </div>
 
-            <div class='modal-body'>是否刪除該筆資料 {{ tempImg.id }} (刪除後將無法恢復)。</div>
+            <div class='modal-body'>是否刪除該筆資料 (刪除後將無法恢復)。</div>
 
             <div class='modal-footer'>
               <button type='button'
@@ -74,14 +76,14 @@
     <div>
       <div
         id='editModal'
-        class='modal fade'
+        class='modal fade bd-example-modal-lg'
         tabindex='-1'
         role='dialog'
         aria-labelledby='exampleModalLabel'
         aria-hidden='true'
       >
-        <div class='modal-dialog' role='document'>
-          <div class='modal-content border-0'>
+        <div class='modal-dialog modal-lg' role='document'>
+          <div class='modal-content '>
             <div class='modal-header bg-danger text-white'>
               <h5 id='exampleModalLabel' class='modal-title'>
                 <span>圖檔上傳</span>
@@ -98,7 +100,6 @@
                   <div class="col-sm-4">
                     <div class="form-group">
                       <label for="customFile">上傳圖片
-                      <i v-if="status.fileUploading" class="fas fa-spinner fa-spin" />
                       </label>
                       <input
                         id="customFile"
@@ -108,7 +109,8 @@
                         @change="uploadFile"
                       />
                     </div>
-                    <img class="img-fluid" :src="tempImg.imageUrl[0]" alt />
+                    <!-- 如何預覽本地圖檔 -->
+                    <!-- <img class="img-fluid" :src="tempImg.imageUrl[0]" alt /> -->
                     </div>
                 </div>
               </div>
@@ -151,6 +153,7 @@ export default {
       status: {
         fileUploading: false,
       },
+      updimg: [],
     };
   },
   created() {
@@ -159,19 +162,11 @@ export default {
       '$1',
     );
     const url = `${process.env.VUE_APP_APIPATH}auth/check`;
-    // Axios 預設值
     this.$http.defaults.headers.common.Authorization = `Bearer ${this.token}`;
     this.$http
       .post(url, { api_token: this.token })
       .then(() => {
         this.getSorage();
-      })
-      .catch((err) => {
-        this.$swal.fire({
-          icon: 'error',
-          title: 'Oops Orders Error 1...',
-          text: `錯誤代碼${err.request.status}`,
-        });
       });
   },
   methods: {
@@ -186,18 +181,8 @@ export default {
           },
         })
         .then((res) => {
-          window.xyx = res.data.data;
-          // this.orders = res.data.data;
           this.storeImg = res.data.data;
           this.pagination = res.data.meta.pagination;
-          this.isLoading = false;
-        })
-        .catch((error) => {
-          this.$swal.fire({
-            icon: 'error',
-            title: 'Oops Orders Error 2...',
-            text: `錯誤代碼${error.request.status}`,
-          });
           this.isLoading = false;
         });
     },
@@ -211,8 +196,12 @@ export default {
             icon: 'success',
             title: '刪除圖檔',
             text: '成功 !',
+            timer: 1000,
+          }).then(() => {
+            this.getSorage(this.pagination.current_page);
+            // 依樣無效
           });
-          this.getSorage(this.pagination.current_page);
+          $('#deleteModal').modal('hide');
         })
         .catch((error) => {
           this.isLoading = false;
@@ -222,8 +211,14 @@ export default {
             text: `錯誤代碼${error.request.status}`,
           });
         });
-      $('#delProductModal').modal('hide');
       this.getSorage(this.pagination.current_page);
+      // this.$swal.fire({
+      //   position: 'center',
+      //   icon: 'info',
+      //   title: '這裡有非同部的問題，刪除檔案 會在更新後被執行，所以畫面是錯誤',
+      //   text: '需要自行 F5 RELOAD ，如何才能處理 ?',
+      //   timer: 4000,
+      // });
     },
 
     openModal(isNew, item) {
@@ -247,14 +242,54 @@ export default {
       }
     },
     updateData() {
-      console.log('updateData');
+      if (this.status.fileUploading === true) {
+        const api = `${process.env.VUE_APP_APIPATH}${this.uuid}/admin/storage`;
+        this.$http.post(api, this.updimg, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        })
+          .then((res) => {
+            if (res.status === 200) {
+              this.status.fileUploading = false;
+            }
+            this.$swal.fire({
+              icon: 'success',
+              title: '檔案上傳',
+              text: '成功',
+              timer: 4000,
+            })
+              .then(() => {
+                this.getSorage(this.pagination.current_page);
+                // 依樣無效
+              });
+            $('#editModal').modal('hide');
+          })
+          .catch((error) => {
+            this.status.fileUploading = false;
+            this.$swal.fire({
+              icon: 'error',
+              title: '檔案上傳失敗...',
+              text: `請檢查是不是檔案大小超過 2MB ${error.request.status}`,
+            });
+          });
+      }
     },
+
     uploadFile() {
-      console.log('uploadFile');
+      const uploadedFile = this.$refs.file.files[0];
+      const formData = new FormData();
+      formData.append('file', uploadedFile);
+      this.status.fileUploading = true;
+      this.updimg = formData;
+      this.$swal.fire({
+        icon: 'success',
+        title: '檔案準備完成，請按下 [確認] 上傳...',
+        text: 'READY',
+        timer: 1000,
+      });
+      this.status.fileUploading = true;
     },
   },
 };
 </script>
-
-<style lang="scss" scoped>
-</style>

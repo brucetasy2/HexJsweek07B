@@ -364,7 +364,7 @@ export default {
         .catch((error) => {
           this.$swal.fire({
             icon: 'error',
-            title: 'Oops1...',
+            title: '取得產列表失敗...',
             text: `錯誤代碼${error.request.status}`,
           });
           this.isLoading = false;
@@ -421,23 +421,23 @@ export default {
       const uploadedFile = this.$refs.file.files[0];
       const formData = new FormData();
       formData.append('file', uploadedFile);
-      const url = `${process.env.VUE_APP_APIPATH}${process.env.VUE_APP_UID}/admin/storage`;
-
+      const api = `${process.env.VUE_APP_APIPATH}${this.uuid}/admin/storage`;
       this.status.fileUploading = true;
-      this.$http.post(url, formData, {
+      this.$http.post(api, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
-      }).then((response) => {
+      }).then((res) => {
         this.status.fileUploading = false;
-        if (response.status === 200) {
-          this.tempProduct.imageUrl.push(response.data.data.path);
+        if (res.status === 200) {
+          this.tempProduct.imageUrl.push(res.data.data.path);
         }
       }).catch((error) => {
+        window.e1 = error;
         this.status.fileUploading = false;
         this.$swal.fire({
           icon: 'error',
-          title: 'Oops2...',
+          title: '檔案上傳失敗...',
           text: `請檢查是不是檔案大小超過 2MB ${error.request.status}`,
         });
       });
