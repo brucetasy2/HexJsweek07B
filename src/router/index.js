@@ -57,7 +57,8 @@ const routes = [
         component: () => import('../views/submenu/Mockorder.vue'),
       },
       {
-        path: 'Payment/:orderId',
+        // path: 'Payment/:orderId',
+        path: 'Payment',
         name: 'Payment_page',
         component: () => import('../views/submenu/Payment.vue'),
       },

@@ -194,11 +194,19 @@ export default {
     };
   },
   created() {
-    this.orderId = this.$route.params.orderId;
-    if (this.orderId) {
-      this.getDetailed(this.orderId);
-    }
+    // this.orderId = this.$route.params.orderId;
+    // if (this.orderId) {
+    //   this.getDetailed(this.orderId);
+    // } else {
+    //   this.getOrders();
+    // }
     this.getOrders();
+    this.isLoading = false;
+    this.$swal.fire({
+      icon: '問題待解',
+      title: '請  F5 刷新..',
+      text: '模擬下單後進入，會出現遮罩 ! 到底是在哪 ? 阿砸 ..',
+    });
   },
   methods: {
     getOrders(page = 1) {

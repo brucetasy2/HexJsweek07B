@@ -773,13 +773,15 @@ export default {
       }
       this.$http
         .post(api, order)
-        .then((res) => {
+        .then(() => {
           this.$swal.fire({
             icon: 'sucess',
             title: '訂單建立',
             text: '成功',
           });
-          this.$router.push(`/admin/Payment/${res.data.data.id}`);
+          // this.$router.push(`/admin/Payment/${res.data.data.id}`);
+          this.isLoading = false;
+          this.$router.push('/admin/Payment');
         })
         .catch((error) => {
           this.$swal.fire({
@@ -787,8 +789,8 @@ export default {
             title: '建立訂單失敗...',
             text: `錯誤代碼${error.request.status}`,
           });
+          this.isLoading = false;
         });
-      this.isLoading = false;
     },
   },
 };
